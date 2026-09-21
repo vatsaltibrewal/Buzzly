@@ -1,0 +1,12 @@
+{
+  // Buzzly relies on Git-tracked AI context: AGENTS.md, .github/skills/, .github/hooks/.
+  "chat.useAgentsMdFile": true,
+  "chat.useAgentSkills": true,
+  "chat.useHooks": true,
+
+  // Keep normal approval prompts. Never set this to a bypass mode in the repository.
+  "chat.permissions.default": "default",
+
+  // Documentation is this project's memory, so broken links are real defects.
+  "markdown.validate.enabled": true
+}

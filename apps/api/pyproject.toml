@@ -1,0 +1,36 @@
+[project]
+name = "buzzly-api"
+version = "0.1.0"
+description = "Buzzly API: auth, lesson content, progress, AI mentor, realtime."
+requires-python = ">=3.14"
+dependencies = [
+    # The no-cloud-cli extra keeps fastapi-cloud-cli, sentry-sdk and telemetry out of the tree.
+    "fastapi[standard-no-fastapi-cloud-cli]>=0.141.1",
+    "sqlalchemy[asyncio]>=2.0.52",
+    "psycopg[binary]>=3.3.5",
+    "alembic>=1.19.2",
+    "pydantic-settings>=2.15.0",
+    "redis>=8.1.0",
+]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.16.6", "mypy>=2.3.1"]
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["app", "app.models"]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC", "S"]
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+files = ["app", "migrations"]

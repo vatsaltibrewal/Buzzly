@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: buzzly-postgres
+    environment:
+      # Local development only. Real credentials never live in this file.
+      POSTGRES_USER: buzzly
+      POSTGRES_PASSWORD: buzzly
+      POSTGRES_DB: buzzly
+    ports:
+      # 55432 on the host, not 5432. Developer machines routinely already run
+      # Postgres on 5432-5435; a host listener silently wins localhost and the
+      # symptom is a confusing "role does not exist" or auth failure.
+      - "55432:5432"
+    volumes:
+      # Postgres 18+ requires the mount at /var/lib/postgresql, not .../data.
+      # Mounting the old path makes the container exit on start.
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U buzzly -d buzzly"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:8-alpine
+    container_name: buzzly-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
